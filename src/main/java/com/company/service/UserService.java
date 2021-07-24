@@ -38,7 +38,7 @@ public class UserService {
         return userDTOConverter.convert(user);
     }
 
-    public UserDTO createUser(CreateUserRequest userRequest) {
+    public UserDTO createUser(final CreateUserRequest userRequest) {
         User user = new User(
                 userRequest.getMail(),
                 userRequest.getFirstName(),
@@ -50,7 +50,7 @@ public class UserService {
         return userDTOConverter.convert(userRepository.save(user));
     }
 
-    public UserDTO updateUser(String mail, UpdateUserRequest updateUserRequest) {
+    public UserDTO updateUser(final String mail, final UpdateUserRequest updateUserRequest) {
 
         User user = findUserByMail(mail);
         if (!user.isActive()) {
@@ -68,15 +68,15 @@ public class UserService {
     }
 
 
-    public void deactivateUser(Long id) {
+    public void deactivateUser(final Long id) {
         changeActivateUser(id, false);
     }
 
-    public void activeUser(Long id) {
+    public void activeUser(final Long id) {
         changeActivateUser(id, true);
     }
 
-    public void deleteUser(Long id) {
+    public void deleteUser(final Long id) {
         if (doesUserExist(id)) {
             userRepository.existsById(id);
         } else {
@@ -85,11 +85,11 @@ public class UserService {
 
     }
 
-    private boolean doesUserExist(Long id) {
+    private boolean doesUserExist(final Long id) {
         return userRepository.existsById(id);
     }
 
-    private void changeActivateUser(Long id, Boolean isActive) {
+    private void changeActivateUser(final Long id, Boolean isActive) {
         User user = findUserById(id);
 
         User u = new User(user.getId(),
@@ -106,7 +106,7 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("User couldn't be found by following mail: " + mail));
     }
 
-    private User findUserById(Long id) {
+    protected User findUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User couldn't be found by following id: " + id));
     }
